@@ -1,0 +1,49 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Weather in Country Capitals</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only color="royal" menuClose>
+          <ion-icon name="ios-close"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-item>
+      <ion-label>Continent</ion-label>
+      <ion-select [(ngModel)]="selectedContinent" (ionChange)="getCountriesWithWeather(selectedContinent)">
+          <ion-option value="Americas" selected="true">America</ion-option>
+          <ion-option value="Europe">Europe</ion-option>
+          <ion-option value="Asia">Asia</ion-option>
+          <ion-option value="Oceania">Oceania</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="filterItems()"
+      placeholder="Search country, city or weather">
+    </ion-searchbar>
+
+                
+    
+    <ion-list>
+      <span ion-item *ngFor="let item of filterList | orderBy" (click)="itemTapped(item)">
+        <ion-grid>
+          <ion-row>
+            <!--<ion-col width-30><b>{{ item.sys.countryName && item.sys.countryName.length > 15 ? item.sys.country : item.sys.countryName ? item.sys.countryName : item.sys.country }}</b></ion-col>-->
+            <ion-col width-30 class="noOverflow"><b>{{ item.sys.countryName}}</b></ion-col>
+            <ion-col>{{ item.name }}</ion-col>
+            <ion-col width-20>{{ item.weather[0].main }}</ion-col>
+          </ion-row>
+        </ion-grid>
+      </span> 
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
